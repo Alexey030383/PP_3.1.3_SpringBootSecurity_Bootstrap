@@ -14,7 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public boolean add(User user) {
         User userFromDB = userRepository.findByEmail(user.getEmail());
 
@@ -46,7 +45,7 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    @Transactional
+    @Override
     public void createRolesIfNotExist() {
         if (roleRepository.findByName("ROLE_USER").isEmpty()) {
             roleRepository.save(new Role(1L, "ROLE_USER"));
@@ -56,7 +55,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional
     @Override
     public void update(User updatedUser) {
         User user = readUser(updatedUser.getId());
@@ -78,7 +76,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void delete(long id) {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Such user not exists"));

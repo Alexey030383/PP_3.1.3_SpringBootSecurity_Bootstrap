@@ -33,9 +33,11 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public String allUsers(Principal principal, Model model) {
+    public String getUsers(Principal principal, Model model) {
         model.addAttribute("users", userService.getAll());
+
         addAttributesToMainPage(model, principal);
+
         return "/admin/user-list";
     }
 
